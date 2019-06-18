@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using ReactTestApp.Models;
 
 namespace ReactTestApp
 {
@@ -27,6 +29,9 @@ namespace ReactTestApp
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddDbContext<ReactTestAppContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ReactTestAppContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

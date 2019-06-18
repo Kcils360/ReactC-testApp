@@ -7,7 +7,7 @@ export class FetchToDo extends Component {
         super(props);
         this.state = { todos: [], loading: true };
 
-        fetch('api/ToDoApp/Todos')
+        fetch('api/ToDoes/GetToDos')
             .then(response => response.json())
             .then(data => {
                 this.setState({ todos: data, loading: false });
@@ -26,9 +26,9 @@ export class FetchToDo extends Component {
                 </thead>
                 <tbody>
                     {todos.map(todo =>
-                        <tr key={todo.TaskName}>
-                            <td>{todo.TaskName}</td>
-                            <td>{todo.TaskDescription}</td>
+                        <tr key={todo.taskName}>
+                            <td>{todo.taskName}</td>
+                            <td>{todo.taskDescription}</td>
                             <td><input type="checkbox" /></td>
                         </tr>
                     )}
