@@ -18,5 +18,5 @@ export default class App extends Component {
         <Route path='/fetch-todo' component={FetchToDo} />
       </Layout>
     );
-  }
+    }
 }

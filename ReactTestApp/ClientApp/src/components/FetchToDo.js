@@ -1,10 +1,13 @@
 ﻿import React, { Component } from 'react';
 
+
 export class FetchToDo extends Component {
     static displayname = FetchToDo.name;
 
     constructor(props) {
         super(props);
+        this.setDone = this.setDone.bind(this);
+        this.newAlert = this.newAlert.bind(this);
         this.state = { todos: [], loading: true };
 
         fetch('api/ToDoes/GetToDos')
@@ -14,7 +17,17 @@ export class FetchToDo extends Component {
             });
     }
 
-    static renderToDosTable(todos) {
+    newAlert() {
+        console.log("this sucks");
+    }
+
+    setDone(id) {
+        console.log(id);
+        console.log(this.state.todos);
+        //this.setState({ this.state.todos  = true })
+    }
+
+    renderToDosTable(todos) {
         return (
             <table className='table table-striped'>
                 <thead>
@@ -26,11 +39,15 @@ export class FetchToDo extends Component {
                 </thead>
                 <tbody>
                     {todos.map(todo =>
-                        <tr key={todo.taskName}>
+                        <tr key={todo.taskName} style={{ textDecoration: todo.isDone ? 'line-through' : 'none', visibility: todo.isDone ? 'hdden' : 'visible' }}  >
                             <td>{todo.taskName}</td>
                             <td>{todo.taskDescription}</td>
-                            <td><input type="checkbox" /></td>
+                            <td>{todo.isDone.toString()}</td>
+                            <td>
+                                <button onClick={() => this.setDone(todo.id)} style={{ visibility: todo.isDone ? 'hidden' : 'visible' }} >Done</button>
+                            </td>
                         </tr>
+            
                     )}
                 </tbody>
             </table>
@@ -40,7 +57,7 @@ export class FetchToDo extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : FetchToDo.renderToDosTable(this.state.todos);
+            : this.renderToDosTable(this.state.todos);
 
         return (
             <div>
@@ -51,4 +68,5 @@ export class FetchToDo extends Component {
         );
     }
 }
+
 
