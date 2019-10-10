@@ -21,10 +21,14 @@ export class FetchToDo extends Component {
         console.log("this sucks");
     }
 
-    setDone(id) {
-        console.log(id);
-        console.log(this.state.todos);
-        //this.setState({ this.state.todos  = true })
+    setDone(todo) {
+        
+        this.setState(this.state.todos.map(idx => {
+            if (idx.id === todo.id) {
+                idx.isDone = true;
+            }
+        }));
+
     }
 
     renderToDosTable(todos) {
@@ -44,10 +48,10 @@ export class FetchToDo extends Component {
                             <td>{todo.taskDescription}</td>
                             <td>{todo.isDone.toString()}</td>
                             <td>
-                                <button onClick={() => this.setDone(todo.id)} style={{ visibility: todo.isDone ? 'hidden' : 'visible' }} >Done</button>
+                                <button onClick={() => this.setDone(todo)} style={{ visibility: todo.isDone ? 'hidden' : 'visible' }} >Done</button>
                             </td>
                         </tr>
-            
+
                     )}
                 </tbody>
             </table>
