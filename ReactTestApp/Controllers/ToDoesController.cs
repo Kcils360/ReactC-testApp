@@ -42,15 +42,15 @@ namespace ReactTestApp.Controllers
         }
 
         // PUT: api/ToDoes/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutToDo(int id, ToDo toDo)
+        [HttpPut("{id}/[action]")]
+        public async Task<IActionResult> PutToDo([FromBody] TodoJson doObject)
         {
-            if (id != toDo.ID)
+            if (doObject.id != doObject.todo.ID)
             {
                 return BadRequest();
             }
-
-            _context.Entry(toDo).State = EntityState.Modified;
+            //TODO - add linq query to make change to DB
+            _context.Entry(doObject.todo).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace ReactTestApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ToDoExists(id))
+                if (!ToDoExists(doObject.id))
                 {
                     return NotFound();
                 }
@@ -101,5 +101,11 @@ namespace ReactTestApp.Controllers
         {
             return _context.ToDo.Any(e => e.ID == id);
         }
+    }
+
+    public class TodoJson
+    {
+        public int id { get; set; }
+        public ToDo todo { get; set; }
     }
 }

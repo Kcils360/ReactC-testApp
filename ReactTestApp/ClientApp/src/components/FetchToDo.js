@@ -7,7 +7,6 @@ export class FetchToDo extends Component {
     constructor(props) {
         super(props);
         this.setDone = this.setDone.bind(this);
-        this.newAlert = this.newAlert.bind(this);
         this.state = { todos: [], loading: true };
 
         fetch('api/ToDoes/GetToDos')
@@ -17,17 +16,26 @@ export class FetchToDo extends Component {
             });
     }
 
-    newAlert() {
-        console.log("this sucks");
-    }
-
     setDone(todo) {
-        
-        this.setState(this.state.todos.map(idx => {
-            if (idx.id === todo.id) {
-                idx.isDone = true;
-            }
-        }));
+
+        this.setState(this.state.todos.map(idx => idx.id === todo.id ? idx.isDone = true : idx.isDone = idx.isDone));
+        //    if (idx.id === todo.id) {
+        //        idx.isDone = true;
+        //    }
+        //}));
+        fetch(`api/ToDoes/${todo.id}/PutToDo`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: todo.id, toDo: todo })
+        })
+            .then(data =>  console.log('fetch completed', data))
+                .catch (error => {
+                    console.error(error);
+            });
+        return (console.log('fetch hit'));
 
     }
 
@@ -51,7 +59,7 @@ export class FetchToDo extends Component {
                                 <button onClick={() => this.setDone(todo)} style={{ visibility: todo.isDone ? 'hidden' : 'visible' }} >Done</button>
                             </td>
                         </tr>
-
+            
                     )}
                 </tbody>
             </table>
